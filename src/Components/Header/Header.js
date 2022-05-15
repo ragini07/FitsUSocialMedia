@@ -3,7 +3,10 @@ import smLogo from "../../assets/logo-smm.PNG";
 import { NavLink } from "react-router-dom";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import {logOut} from '../../features/authSlice';
+import {useDispatch , useSelector} from 'react-redux';
 function Header() {
+  const dispatch =  useDispatch();
 
   return (
     <header className="h-16 bg-white border-b-2 border-purple-500 mb-8 px-5 sticky top-0">
@@ -78,7 +81,8 @@ function Header() {
               <div className="text-xs text-gray-400 pt-1 font-thin font-light">BookMark</div>
             </div>
 
-            <div className="text-gray-700 px-3 text-center flex flex-col items-center align-items cursor-pointer">
+            <div className="text-gray-700 px-3 text-center flex flex-col items-center align-items cursor-pointer"
+              onClick={() => dispatch(logOut())}>
           
               <svg className="mt-4"
                 xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +99,8 @@ function Header() {
                   clip-rule="evenodd"
                 />
               </svg>
-              <div className="text-xs text-gray-400 pt-1">Logout</div>
+              <div className="text-xs text-gray-400 pt-1"
+            >Logout</div>
             </div>
           </div>
         </div>

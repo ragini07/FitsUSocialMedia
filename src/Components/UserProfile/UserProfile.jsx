@@ -1,36 +1,41 @@
 import React from 'react';
 import { MenuBar, SuggestionBar } from "../index";
+import {useDispatch , useSelector} from 'react-redux';
 
 function UserProfile() {
+  const {users , status}  = useSelector(state => state.user)
+  const {user} = useSelector(state => state.auth)
+  console.log(user)
+  const dispatch = useDispatch()
   return (
     <>
        <div className="flex mx-32 my-8 gap-2 lg:mx-6">
         <div className="container">
-    {/* profile */}
+
           <div className="flex flex-col">
             <div className="p-4 rounded-lg border-gray-base border-2">
               <div className="flex gap-4 grow items-start">
              
                   <img
                     className="h-16 w-16 rounded-full"
-                    src="https://tse2.mm.bing.net/th?id=OIP.jryuUgIHWL-1FVD2ww8oWgHaHa&pid=Api&P=0&w=192&h=192"
-                    alt="profile-img"
+                    src={user.profilePhoto}
+                    alt="user-profile-img"
                   />
                 
                 <div>
                     <div className='flex justify-between'>
                         <div className='flex flex-col'>
-                            <div className='text-lg'>Ragini Singh</div>
-                            <div className='text-gray-400 text-sm'>@adarsh balika</div>
+                            <div className='text-lg'>{user.firstName} {user.lastName}</div>
+                            <div className='text-gray-400 text-sm'>@{user.userHandle}</div>
                         </div>
                        
                     </div>
-                    <p className='text-gray-600 font-semibold'>Business Analyst</p>
-                    <p className='text-blue-500 font-medium text-sm cursor-pointer'>http://portfolio.com</p>
+                    <p className='text-gray-600 font-semibold'>{user.bio}</p>
+                    <p className='text-blue-500 font-medium text-sm cursor-pointer'>{user.portfolioURL}</p>
                     <div className='flex text-gray-500 gap-10 mt-2'>
                         <p>1 Post</p>
-                        <p>1 Followers</p>
-                        <p>1 Following</p>
+                        <p>{user.followers.length} Followers</p>
+                        <p>{user.following.length} Following</p>
                     </div>
                 </div>
                 <button className='ring-2 ring-purple-500 m-2 py-1 px-2 hover:bg-gray-200 rounded-lg text-gray-600 ml-auto cursor-pointer'>Edit</button>
@@ -38,10 +43,9 @@ function UserProfile() {
               </div>
             </div>
 
-            {/* feed */}
-            {/**Post-feed */}
+           
             <div className="flex flex-col gap-4 bg-nav-background drop-shadow-2xl p-5 rounded-lg border-gray-base border-2 mt-4">
-              {/** post header */}
+            
               <div className="flex gap-4  flex-grow">
                 <img
                   className="rounded-full h-12 w-12"
@@ -58,7 +62,7 @@ function UserProfile() {
                   <i className="ri-more-fill text-xl cursor-pointer"></i>
                 </div>
               </div>
-              {/**Post details */}
+           
               <div className="flex flex-col gap-2 flex-grow">
                 <p>
                   The most beautiful things are not associated with money; they
@@ -71,7 +75,7 @@ function UserProfile() {
                   alt="post-details"
                 />
               </div>
-              {/**Post footer */}
+            
               <div className="flex gap-4 flex-grow py-1  items-center justify-evenly font-normal text-txt-secondary-color">
                 <div className="flex items-center  cursor-pointer gap-1 cursor-pointer">
                   <i className="fa fa-heart-o mr-1 fa-solid"></i>

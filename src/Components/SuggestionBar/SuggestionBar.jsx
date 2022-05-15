@@ -1,22 +1,40 @@
-import React from "react";
-import {useNavigate} from 'react-router-dom'
+
+import {useNavigate} from 'react-router-dom';
+import {useDispatch , useSelector} from 'react-redux';
+import { useEffect ,useState} from "react";
+import {getAllUsers} from '../../features/userSlice'
+
 
 function SuggestionBar() {
+  const [suggestedUser , setSuggestedUser] = useState([])
   const navigate = useNavigate()
-
+  const {users , status}  = useSelector(state => state.user)
+  const {user} = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(getAllUsers());
+    }
+    let suggestions = users.filter(e => e.username !== user.username).filter(e => !e.followers.some(e1 => e1._id === user._id))
+    setSuggestedUser(() => suggestions)
+    console.log(suggestions)
+   
+  },[users , status])
+  // console.log(users)
+  console.log(user)
   return (
     <div className="p-4 md:hidden border-2 rounded-lg sticky top-24 w-2/6 h-full">
       <div className="grid grid-cols-4 gap-1 mb-6 items-center">
         <div className="flex items-center justify-between col-span-1">
           <img
             className="rounded-full w-16 flex"
-            src="https://tse2.mm.bing.net/th?id=OIP.jryuUgIHWL-1FVD2ww8oWgHaHa&pid=Api&P=0&w=192&h=192"
+            src={user.profilePhoto}
           ></img>
         </div>
         <div className="col-span-3 cursor-pointer"
         onClick={() =>  navigate('/userprofile')}>
-          <p className="font-bold text-sm">Adarash Balika</p>
-          <p className="text-sm">@adarshbalika</p>
+          <p className="font-bold text-sm">{user.firstName} {user.lastName}</p>
+          <p className="text-sm">@{user.userHandle}</p>
         </div>
       </div>
 
@@ -25,45 +43,33 @@ function SuggestionBar() {
           <p className="font-bold text-gray-base">Suggestions for you</p>
         </div>
         <div className="mt-4 grid gap-5">
-          <div className="grid grid-cols-4 gap-1 mb-6 items-center">
+        {suggestedUser.length > 0 ? 
+          suggestedUser.map(({firstName,lastName,userHandle,profilePhoto}) => {
+            return <>
+             <div className="grid grid-cols-4 gap-1 mb-6 items-center">
             <div className="flex items-center justify-between col-span-1">
               <img
                 className="rounded-full w-12 flex"
-                src="https://tse2.mm.bing.net/th?id=OIP.jryuUgIHWL-1FVD2ww8oWgHaHa&pid=Api&P=0&w=192&h=192"
+                src={profilePhoto}
               ></img>
             </div>
             <div className="col-span-3 cursor-pointer"
             onClick={() =>  navigate('/otherprofile')}>
-              <p className="font-bold text-sm">Adarash Balika</p>
-              <p className="text-sm">@adarshbalika</p>
+              <p className="font-bold text-sm">{firstName} {lastName}</p>
+              <p className="text-sm">@{userHandle}</p>
             </div>
           </div>
+            </>
+          })
+          : <div>No Suggestions</div>
+        }
+       
+         
 
-          <div className="grid grid-cols-4 gap-1 mb-6 items-center">
-            <div className="flex items-center justify-between col-span-1">
-              <img
-                className="rounded-full w-12 flex"
-                src="https://tse2.mm.bing.net/th?id=OIP.jryuUgIHWL-1FVD2ww8oWgHaHa&pid=Api&P=0&w=192&h=192"
-              ></img>
-            </div>
-            <div className="col-span-3">
-              <p className="font-bold text-sm">Adarash Balika</p>
-              <p className="text-sm">@adarshbalika</p>
-            </div>
-          </div>
+          
 
-          <div className="grid grid-cols-4 gap-1 mb-6 items-center">
-            <div className="flex items-center justify-between col-span-1">
-              <img
-                className="rounded-full w-12 flex"
-                src="https://tse2.mm.bing.net/th?id=OIP.jryuUgIHWL-1FVD2ww8oWgHaHa&pid=Api&P=0&w=192&h=192"
-              ></img>
-            </div>
-            <div className="col-span-3">
-              <p className="font-bold text-sm">Adarash Balika</p>
-              <p className="text-sm">@adarshbalika</p>
-            </div>
-          </div>
+       
+         
           
         </div>
       </div>
