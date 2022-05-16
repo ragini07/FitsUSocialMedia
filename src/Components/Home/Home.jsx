@@ -1,24 +1,21 @@
-
 import { MenuBar, SuggestionBar } from "../index";
-import {useDispatch , useSelector} from 'react-redux';
-import {getAllPost} from '../../features/postSlice'
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPost } from "../../features/postSlice";
 import { useEffect } from "react";
-import {SinglePost} from './SinglePost'
-
+import { SinglePost } from "./SinglePost";
 
 function Home() {
-  const { allPost }  = useSelector(state => state.post)
-  
-  const dispatch = useDispatch()
+  const { allPost } = useSelector((state) => state.post);
+
+  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllPost())
-  },[])
+    dispatch(getAllPost());
+  }, []);
 
   return (
     <>
       <div className="flex mx-32 my-8 gap-2 lg:mx-6">
         <div className="container">
-     
           <div className="flex flex-col">
             <div className="p-4 rounded-lg border-gray-base border-2">
               <div className="flex flex-col gap-4 grow">
@@ -49,30 +46,8 @@ function Home() {
               </div>
             </div>
 
-            {
-              allPost.length > 0 && allPost.map(post => <SinglePost key ={post._id} post={post}/>)
-            }
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
+            {allPost.length > 0 &&
+              allPost.map((post) => <SinglePost key={post._id} post={post} />)}
           </div>
         </div>
         <SuggestionBar />

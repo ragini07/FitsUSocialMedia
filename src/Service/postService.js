@@ -6,7 +6,7 @@ export const getAllPostsFromServer = () => {
 
 
 export const getUserPostsFromServer = (username) => {
-    console.log("server")
+   
     return axios.get(`/api/posts/user/${username}`);
 }
 
