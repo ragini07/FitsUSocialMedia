@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginUser  , signUpUser} from "../Service";
+import { loginUser  , signUpUser ,updateUserProfile} from "../Service";
 
 const initialState = {
     token : JSON.parse(localStorage?.getItem("authToken")) ,
@@ -26,6 +26,18 @@ export const signUp = createAsyncThunk(
     async ({firstName, lastName, email, password }, thunkAPI) => {
       try {
         const response = await signUpUser(firstName, lastName,email, password);
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
+export const updateUser = createAsyncThunk(
+    "post/updateuser",
+    async ({ token , userData }, thunkAPI) => {
+      try {
+        const response = await updateUserProfile(token , userData);
+        console.log(response)
         return response.data;
       } catch (err) {
         return thunkAPI.rejectWithValue(err);
@@ -75,6 +87,21 @@ export const signUp = createAsyncThunk(
             localStorage.setItem("userData", JSON.stringify(state.user));
         },
         [signUp.rejected]: (state, action) => {
+            state.status = "error";
+            state.error = action.payload;
+          },
+
+          [updateUser.pending]: (state) => {
+            state.status = "pending";
+          },
+        [updateUser.fulfilled] : (state,action) => {
+            console.log("local storgae",action.payload)
+            state.status = "fulfilled";
+            state.user = action.payload.user;
+            localStorage.setItem("userData", JSON.stringify(state.user));
+           
+        },
+        [updateUser.rejected]: (state, action) => {
             state.status = "error";
             state.error = action.payload;
           },

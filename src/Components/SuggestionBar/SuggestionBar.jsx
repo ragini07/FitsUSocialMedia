@@ -17,11 +17,10 @@ function SuggestionBar() {
     }
     let suggestions = users.filter(e => e.username !== user.username).filter(e => !e.followers.some(e1 => e1._id === user._id))
     setSuggestedUser(() => suggestions)
-    console.log(suggestions)
+   
    
   },[users , status])
-  // console.log(users)
-  console.log(user)
+  
   return (
     <div className="p-4 md:hidden border-2 rounded-lg sticky top-24 w-2/6 h-full">
       <div className="grid grid-cols-4 gap-1 mb-6 items-center">
@@ -54,7 +53,7 @@ function SuggestionBar() {
               ></img>
             </div>
             <div className="col-span-3 cursor-pointer"
-            onClick={() =>  navigate('/otherprofile')}>
+            onClick={() =>  navigate(`/otherprofile/${userHandle}`)}>
               <p className="font-bold text-sm">{firstName} {lastName}</p>
               <p className="text-sm">@{userHandle}</p>
             </div>

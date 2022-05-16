@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {  updateUserProfile , getAllUsersFromServer} from "../Service";
+import {  updateUserProfile , getAllUsersFromServer ,followUserService ,unFollowUserService} from "../Service";
+import {updateUser} from './authSlice'
 
 const initialState = {
    users : [],
@@ -13,7 +14,36 @@ export const getAllUsers = createAsyncThunk(
       try {
        
         const response = await getAllUsersFromServer();
-        console.log(response)
+      
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
+
+  export const followUser = createAsyncThunk(
+    "post/followuser",
+    async ({token, id , dispatch}, thunkAPI) => {
+      try {
+       console.log(id)
+        const response = await followUserService(token, id);
+      
+        dispatch(updateUser({token : token , userData : response.data.user}))
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
+
+  export const  unfollowUser = createAsyncThunk(
+    "post/unfollowuser",
+    async ({token, id ,dispatch}, thunkAPI) => {
+      try {
+       
+        const response = await unFollowUserService(token, id);
+        dispatch(updateUser({token : token , userData : response.data.user}))
         return response.data;
       } catch (err) {
         return thunkAPI.rejectWithValue(err);
@@ -33,12 +63,45 @@ export const getAllUsers = createAsyncThunk(
             state.status = "pending";
           },
         [getAllUsers.fulfilled] : (state,action) => {
-            console.log(action.payload)
+    
             state.status = "fulfilled";
             state.users = action.payload.users;
           
         },
         [getAllUsers.rejected]: (state, action) => {
+            state.status = "error";
+            state.error = action.payload;
+          },
+        [followUser.pending]: (state) => {
+            state.status = "pending";
+          },
+        [followUser.fulfilled] : (state,action) => {
+    
+            state.status = "fulfilled";
+           console.log("follow" ,action.payload)
+           const username = action.payload.followUser.username
+           const index = state.users.findIndex(e => e.username === username)
+           state.users[index] = action.payload.followUser
+          
+        },
+        [followUser.rejected]: (state, action) => {
+            state.status = "error";
+            state.error = action.payload;
+          },
+
+          [unfollowUser.pending]: (state) => {
+            state.status = "pending";
+          },
+        [unfollowUser.fulfilled] : (state,action) => {
+    
+            state.status = "fulfilled";
+           console.log("unfollow" ,action.payload)
+           const username = action.payload.followUser.username
+           const index = state.users.findIndex(e => e.username === username)
+           state.users[index] = action.payload.followUser
+          
+        },
+        [unfollowUser.rejected]: (state, action) => {
             state.status = "error";
             state.error = action.payload;
           },
