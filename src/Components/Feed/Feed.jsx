@@ -1,102 +1,87 @@
-import React from 'react';
 import { MenuBar, SuggestionBar } from "../index";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserPosts, getAllPost } from "../../features/postSlice";
+import { useEffect, useState } from "react";
+import { SinglePost } from "../Home/SinglePost";
 
 function Feed() {
+  const [feed, setFeed] = useState([]);
+  const [trending, setTrending] = useState(false);
+  const [trendingFeed, setTrendingFeed] = useState([]);
+  const { user } = useSelector((state) => state.auth);
+  const { allPost } = useSelector((state) => state.post);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllPost());
+  }, []);
+  useEffect(() => {
+    const getFeedOfUser = allPost.filter(
+      (post) => post.username === user.username
+    );
+    const getFeedOfOtherUsers = allPost.filter((post) =>
+      user.following.some((e) => e.username === post.username)
+    );
+
+    setFeed(() => [...getFeedOfUser, ...getFeedOfOtherUsers]);
+  }, [user, allPost]);
+
+  const lastestPostHandler = () => {
+    setTrending(false);
+    setFeed((feed) =>
+      [...feed].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    );
+  };
+  const trendingPostHandler = () => {
+    setTrending(true);
+    const trendingPost = [...feed]
+      .filter((e) => e.likes.likeCount > 0)
+      .sort((a, b) => b.likes.likeCount - a.likes.likeCount);
+    setTrendingFeed(() => trendingPost);
+  };
   return (
     <>
-    <div className="flex mx-32 my-8 gap-2 lg:mx-6">
+      <div className="flex mx-32 my-8 gap-2 lg:mx-6">
         <div className="container">
           {/* post */}
           <div className="flex flex-col">
             <div className="p-3 rounded-lg bg-gray-200 text-center font-semibold">
-             Feed
+              Feed
             </div>
 
             <div className="flex rounded-lg bg-gray-100 text-center font-medium my-3 justify-evenly">
-            <div className='w-1/2 cursor-pointer p-2 hover:bg-purple-300 hover:text-white'>Latest Posts</div>
-            <div className='w-1/2 border-l-2 p-2  border-purple-600 cursor-pointer hover:bg-purple-300 hover:text-white'>Trending</div>
+              <div
+                className="w-1/2 cursor-pointer p-2 hover:bg-purple-300 hover:text-white"
+                onClick={lastestPostHandler}
+              >
+                Latest Posts
+              </div>
+              <div
+                className="w-1/2 border-l-2 p-2  border-purple-600 cursor-pointer hover:bg-purple-300 hover:text-white"
+                onClick={trendingPostHandler}
+              >
+                Trending
+              </div>
             </div>
 
-            {/* feed */}
-            {/**Post-feed */}
-            <div className="flex flex-col gap-4 bg-nav-background drop-shadow-2xl p-5 rounded-lg border-gray-base border-2 mt-4">
-              {/** post header */}
-              <div className="flex gap-4  flex-grow">
-                <img
-                  className="rounded-full h-12 w-12"
-                  src="https://tse2.mm.bing.net/th?id=OIP.jryuUgIHWL-1FVD2ww8oWgHaHa&pid=Api&P=0&w=192&h=192"
-                  alt="post-hero"
-                />
-                <div className="flex justify-between flex-grow">
-                  <div className="flex flex-col">
-                    <p className="text-xl">Kristien Stewart</p>
-                    <p className="text-xs text-txt-secondary-color">
-                      July 26 2018
-                    </p>
-                  </div>
-                  <i className="ri-more-fill text-xl cursor-pointer"></i>
-                </div>
-              </div>
-              {/**Post details */}
-              <div className="flex flex-col gap-2 flex-grow">
-                <p>
-                  The most beautiful things are not associated with money; they
-                  are memories and moments. If you don't celebrate those, they
-                  can pass you by!
-                </p>
-                <img
-                  className="rounded-lg"
-                  src="https://images.unsplash.com/photo-1558236617-7d65d9dbcd02?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGNlbGVicmF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60"
-                  alt="post-details"
-                />
-              </div>
-              {/**Post footer */}
-              <div className="flex gap-4 flex-grow py-1  items-center justify-evenly font-normal text-txt-secondary-color">
-                <div className="flex items-center  cursor-pointer gap-1 cursor-pointer">
-                  <i className="fa fa-heart-o mr-1 fa-solid"></i>
-                  <span>1 Likes</span>
-                </div>
-                <div className="flex items-center cursor-pointer gap-1 cursor-pointer">
-                  <i className="fa fa-bookmark fa-solid mr-1"></i>
-                  <span>Bookmarked</span>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <img
-                  className="h-8 rounded-full"
-                  src="https://tse2.mm.bing.net/th?id=OIP.jryuUgIHWL-1FVD2ww8oWgHaHa&pid=Api&P=0&w=192&h=192"
-                />
-                <div className="self-center w-full border-solid border border-gray-400 grow flex justify-start rounded-md px-2 py-1">
-                  <input
-                    className="grow focus:outline-none cursor-pointer"
-                    placeholder="post comment"
-                  ></input>
-                  <button className="text-sm text-purple-500 cursor-pointer font-semibold hover:cursor-not-allowed ml-auto cursor-pointer">
-                    Comment
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <img
-                  className="h-8 rounded-full"
-                  src="https://tse2.mm.bing.net/th?id=OIP.jryuUgIHWL-1FVD2ww8oWgHaHa&pid=Api&P=0&w=192&h=192"
-                />
-                <div className="w-full bg-gray-200 grow flex flex-col rounded-md px-2 py-1">
-                  <p className="text-sm">Ragini Singh</p>
-                  <p className="text-xs text-gray-500">great to see you enjoying</p>
-                </div>
-              </div>
-
-
-            </div>
+            {trending ? (
+              trendingFeed.length > 0 ? (
+                trendingFeed.map((post) => (
+                  <SinglePost key={post._id} post={post} />
+                ))
+              ) : (
+                <div>Likes Posts to see what's trending</div>
+              )
+            ) : feed.length > 0 ? (
+              feed.map((post) => <SinglePost key={post._id} post={post} />)
+            ) : (
+              <div className="">No posts yet!</div>
+            )}
           </div>
         </div>
         <SuggestionBar />
       </div>
     </>
-  )
+  );
 }
 
-export {Feed}
+export { Feed };
