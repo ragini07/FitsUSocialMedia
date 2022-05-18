@@ -1,13 +1,14 @@
 import Mockman from "mockman-js";
 import { Routes, Route } from "react-router-dom";
-import {PrivateRoute,Login ,Signup , Header , Home, Bookmark , Feed,MainContainer, UserProfile,OtherProfile} from './Components'
+import {PrivateRoute,Login,PostModal ,Signup,ProfileModal , Header , Home, Bookmark , Feed,MainContainer, UserProfile,OtherProfile} from './Components'
 
 
 function App() {
   return (
     <>
   
-   
+  {/* <ProfileModal /> */}
+  <PostModal />
     <Routes>
 
         <Route path="/" element={
