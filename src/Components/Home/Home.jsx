@@ -6,11 +6,12 @@ import { SinglePost } from "./SinglePost";
 
 function Home() {
   const { allPost } = useSelector((state) => state.post);
+  const { user } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllPost());
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -22,7 +23,7 @@ function Home() {
                 <div className="flex items-center gap-4 grow">
                   <img
                     className="h-14 w-14 rounded-full"
-                    src="https://tse2.mm.bing.net/th?id=OIP.jryuUgIHWL-1FVD2ww8oWgHaHa&pid=Api&P=0&w=192&h=192"
+                    src={user.profilePhoto}
                     alt="profile-img"
                   />
                   <input

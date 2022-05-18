@@ -4,11 +4,19 @@ import {
   getUserPostsFromServer,
   likePostService,
   disLikePostService,
+  getBookmarkedPosts,
+  removePostFromBookmark,
+  addPostToBookmark,
+  createPostService,
+  editPostService,
+  deletePostService,
+
 } from "../Service";
 
 const initialState = {
   allPost: [],
   userPosts: [],
+  bookmarkedPosts : []
 };
 
 export const getAllPost = createAsyncThunk(
@@ -58,6 +66,42 @@ export const disLikePost = createAsyncThunk(
     }
   }
 );
+
+export const bookmarkPost = createAsyncThunk(
+    "post/bookmarkpost",
+    async ({ token, postId}, thunkAPI) => {
+      try {
+        const response = await addPostToBookmark(token, postId);
+       
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
+  export const removeBookmarkedPost = createAsyncThunk(
+    "post/removebookmarkpost",
+    async ({ token, postId }, thunkAPI) => {
+      try {
+        const response = await removePostFromBookmark(token, postId);
+     
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
+  export const getBookmarkedPost = createAsyncThunk(
+    "get/bookmarkedpost",
+    async ({ token }, thunkAPI) => {
+      try {
+        const response = await getBookmarkedPosts(token);
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
 export const postSlice = createSlice({
   name: "post",
   initialState,
@@ -108,6 +152,42 @@ export const postSlice = createSlice({
       state.status = "error";
       state.error = action.payload;
     },
+    [bookmarkPost.pending]: (state) => {
+        state.status = "pending";
+      },
+      [bookmarkPost.fulfilled]: (state, action) => {
+        state.status = "fulfilled";
+      
+        state.allPost = action.payload.posts;
+      },
+      [bookmarkPost.rejected]: (state, action) => {
+        state.status = "error";
+        state.error = action.payload;
+      },
+      [removeBookmarkedPost.pending]: (state) => {
+        state.status = "pending";
+      },
+      [removeBookmarkedPost.fulfilled]: (state, action) => {
+        state.status = "fulfilled";
+     
+        state.allPost = action.payload.posts;
+      },
+      [removeBookmarkedPost.rejected]: (state, action) => {
+        state.status = "error";
+        state.error = action.payload;
+      },
+      [getBookmarkedPost.pending]: (state) => {
+        state.status = "pending";
+      },
+      [getBookmarkedPost.fulfilled]: (state, action) => {
+        state.status = "fulfilled";
+     
+        state.bookmarkedPosts = action.payload.bookmarks;
+      },
+      [getBookmarkedPost.rejected]: (state, action) => {
+        state.status = "error";
+        state.error = action.payload;
+      },
   },
 });
 

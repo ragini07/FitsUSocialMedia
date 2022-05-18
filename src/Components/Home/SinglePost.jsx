@@ -1,21 +1,30 @@
-import React from "react";
+import {useEffect} from "react";
 import { Comments } from "./Comments";
 import { useDispatch, useSelector } from "react-redux";
 import { getDate } from "../../utils/getDate";
 import { useNavigate } from "react-router-dom";
-import { likePost, disLikePost } from "../../features/postSlice";
+import { getAllUsers } from "../../features/userSlice";
+import { likePost, disLikePost ,bookmarkPost ,removeBookmarkedPost} from "../../features/postSlice";
 
 function SinglePost({ post }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { _id, content, username, comments, likes, createdAt } = post;
+  const { _id, content, username, comments, likes, createdAt ,bookmark } = post;
   const { users, status } = useSelector((state) => state.user);
   const { user, token } = useSelector((state) => state.auth);
   const postedByUser = users?.find((e) => e.username === username);
   const { firstName, lastName, profilePhoto, userHandle } = postedByUser;
   const { date, month, year } = getDate(createdAt);
+  
 
-  const isLiked = likes.likedBy.some((e) => e.username === user.username);
+  useEffect(() => {
+    dispatch(getAllUsers());
+},[user])
+
+  const isLiked = likes?.likedBy.some((e) => e.username === user.username);
+  const isBoomarked = bookmark?.some(e => e.username === user.username)
+  
+
   const navigateHandler = () => {
     userHandle === user.userHandle
       ? navigate("/userprofile")
@@ -27,6 +36,10 @@ function SinglePost({ post }) {
       ? dispatch(disLikePost({ token: token, postId: _id }))
       : dispatch(likePost({ token: token, postId: _id }));
   };
+
+  const bookmarkHandler =() => {
+      isBoomarked ? dispatch(removeBookmarkedPost({ token: token, postId: _id })) : dispatch(bookmarkPost({ token: token, postId: _id }))
+  }
   return (
     <>
       <div className="flex flex-col gap-4 bg-nav-background drop-shadow-2xl p-5 rounded-lg border-gray-base border-2 mt-4">
@@ -80,14 +93,15 @@ function SinglePost({ post }) {
                 : "Like"}
             </span>
           </div>
-          <div className="flex items-center gap-1 cursor-pointer">
-            <i className="fa fa-bookmark-o fa-solid mr-1"></i>
-            <span>Bookmark</span>
+          <div className="flex items-center gap-1 cursor-pointer"
+          onClick={bookmarkHandler}>
+            <i className={`fa fa-solid mr-1  ${isBoomarked ? 'fa-bookmark': 'fa-bookmark-o' }`}></i>
+            <span>{isBoomarked ? 'Bookmarked' : 'Bookmark'}</span>
           </div>
         </div>
 
         <div className="flex gap-3">
-          <img className="h-8 rounded-full" src={user.profilePhoto} />
+          <img className="h-8 w-8 rounded-full" src={user.profilePhoto} />
           <div className="self-center w-full border-solid border border-gray-400 grow flex justify-start rounded-md px-2 py-1">
             <input
               className="grow focus:outline-none cursor-pointer"

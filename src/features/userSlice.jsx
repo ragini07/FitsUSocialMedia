@@ -11,6 +11,7 @@ const initialState = {
   users: [],
   status: "idle",
   error: null,
+  profileModal : false
 };
 
 export const getAllUsers = createAsyncThunk(
@@ -56,7 +57,12 @@ export const unfollowUser = createAsyncThunk(
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+      setProfileModal : (state) => {
+       
+          state.profileModal = !state.profileModal;
+      }
+  },
   extraReducers: {
     [getAllUsers.pending]: (state) => {
       state.status = "pending";
@@ -101,4 +107,5 @@ export const userSlice = createSlice({
   },
 });
 
+export const { setProfileModal } = userSlice.actions;
 export default userSlice.reducer;

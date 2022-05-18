@@ -37,3 +37,76 @@ export const likePostService = (token, postId) => {
       }
     );
   };
+
+  export const addPostToBookmark = (token, postId) => {
+    return axios.post(
+      `/api/users/bookmark/${postId}`,
+      {
+        
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };
+  export const removePostFromBookmark = (token, postId) => {
+    return axios.post(
+      `/api/users/remove-bookmark/${postId}`,
+      {
+        
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };
+  export const getBookmarkedPosts = (token) => {
+    return axios.get("/api/users/bookmark/",
+    {
+        headers: {
+          authorization: token,
+        },
+      });
+}
+export const createPostService = (token, post) => {
+    return axios.post(
+      `/api/posts`,
+      {
+        post
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };
+
+  export const editPostService = (token, post) => {
+    return axios.post(
+      `/api/posts/edit/${post._id}`,
+      {
+        post
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };
+  export const deletePostService = (token, postId) => {
+    return axios.delete(
+      `/api/posts/${postId}`,
+     
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };
