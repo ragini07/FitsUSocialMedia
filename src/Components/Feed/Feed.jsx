@@ -13,7 +13,7 @@ function Feed() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllPost());
-  }, []);
+  }, [user]);
   useEffect(() => {
     const getFeedOfUser = allPost.filter(
       (post) => post.username === user.username

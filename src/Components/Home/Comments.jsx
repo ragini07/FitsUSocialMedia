@@ -9,7 +9,7 @@ function Comments({ comment }) {
   return (
     <>
       <div className="flex gap-3">
-        <img className="h-8 rounded-full" src={profilePhoto} />
+        <img className="h-8 w-8 rounded-full" src={profilePhoto} />
         <div className="w-full bg-gray-200 grow flex flex-col rounded-md px-2 py-1">
           <p className="text-sm">
             {firstName} {lastName}

@@ -72,3 +72,41 @@ export const likePostService = (token, postId) => {
         },
       });
 }
+export const createPostService = (token, post) => {
+    return axios.post(
+      `/api/posts`,
+      {
+        post
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };
+
+  export const editPostService = (token, post) => {
+    return axios.post(
+      `/api/posts/edit/${post._id}`,
+      {
+        post
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };
+  export const deletePostService = (token, postId) => {
+    return axios.delete(
+      `/api/posts/${postId}`,
+     
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };

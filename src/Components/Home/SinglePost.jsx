@@ -1,8 +1,9 @@
-import React from "react";
+import {useEffect} from "react";
 import { Comments } from "./Comments";
 import { useDispatch, useSelector } from "react-redux";
 import { getDate } from "../../utils/getDate";
 import { useNavigate } from "react-router-dom";
+import { getAllUsers } from "../../features/userSlice";
 import { likePost, disLikePost ,bookmarkPost ,removeBookmarkedPost} from "../../features/postSlice";
 
 function SinglePost({ post }) {
@@ -14,10 +15,16 @@ function SinglePost({ post }) {
   const postedByUser = users?.find((e) => e.username === username);
   const { firstName, lastName, profilePhoto, userHandle } = postedByUser;
   const { date, month, year } = getDate(createdAt);
+  
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+},[user])
 
   const isLiked = likes?.likedBy.some((e) => e.username === user.username);
   const isBoomarked = bookmark?.some(e => e.username === user.username)
   
+
   const navigateHandler = () => {
     userHandle === user.userHandle
       ? navigate("/userprofile")
@@ -94,7 +101,7 @@ function SinglePost({ post }) {
         </div>
 
         <div className="flex gap-3">
-          <img className="h-8 rounded-full" src={user.profilePhoto} />
+          <img className="h-8 w-8 rounded-full" src={user.profilePhoto} />
           <div className="self-center w-full border-solid border border-gray-400 grow flex justify-start rounded-md px-2 py-1">
             <input
               className="grow focus:outline-none cursor-pointer"

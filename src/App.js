@@ -7,8 +7,8 @@ function App() {
   return (
     <>
   
-  {/* <ProfileModal /> */}
-  <PostModal />
+  <ProfileModal />
+  {/* <PostModal /> */}
     <Routes>
 
         <Route path="/" element={

@@ -11,7 +11,7 @@ function Home() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllPost());
-  }, []);
+  }, [user]);
 
   return (
     <>

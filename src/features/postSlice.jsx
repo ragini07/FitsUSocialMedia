@@ -6,7 +6,11 @@ import {
   disLikePostService,
   getBookmarkedPosts,
   removePostFromBookmark,
-  addPostToBookmark
+  addPostToBookmark,
+  createPostService,
+  editPostService,
+  deletePostService,
+
 } from "../Service";
 
 const initialState = {
