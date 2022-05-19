@@ -27,7 +27,7 @@ function UserProfile() {
               <div className="flex gap-4 grow items-start">
                 <img
                   className="h-16 w-16 rounded-full"
-                  src={user.profilePhoto}
+                  src={user?.profilePhoto}
                   alt="user-profile-img"
                 />
 
@@ -35,21 +35,21 @@ function UserProfile() {
                   <div className="flex justify-between">
                     <div className="flex flex-col">
                       <div className="text-lg">
-                        {user.firstName} {user.lastName}
+                        {user?.firstName} {user?.lastName}
                       </div>
                       <div className="text-gray-400 text-sm">
-                        @{user.userHandle}
+                        @{user?.userHandle}
                       </div>
                     </div>
                   </div>
-                  <p className="text-gray-600 font-semibold">{user.bio}</p>
+                  <p className="text-gray-600 font-semibold">{user?.bio}</p>
                   <p className="text-blue-500 font-medium text-sm cursor-pointer">
-                    {user.portfolioURL}
+                    {user?.portfolioURL}
                   </p>
                   <div className="flex text-gray-500 gap-10 mt-2">
-                    <p>{userPosts.length} Post</p>
-                    <p>{user.followers.length} Followers</p>
-                    <p>{user.following.length} Following</p>
+                    <p>{userPosts?.length} Post</p>
+                    <p>{user?.followers.length} Followers</p>
+                    <p>{user?.following.length} Following</p>
                   </div>
                 </div>
                 <button className="ring-2 ring-purple-500 m-2 py-1 px-2 hover:bg-gray-200 rounded-lg text-gray-600 ml-auto cursor-pointer"
