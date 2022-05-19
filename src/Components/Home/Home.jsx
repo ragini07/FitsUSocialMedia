@@ -13,7 +13,7 @@ function Home() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllPost());
-  }, [allPost, user]);
+  }, [user]);
 
   const createPostHandler = () => {
     dispatch(createPost({ token: token, post: postData }));

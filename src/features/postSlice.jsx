@@ -156,12 +156,12 @@ export const postSlice = createSlice({
     [getAllPost.fulfilled]: (state, action) => {
       state.status = "fulfilled";
       state.allPost = action.payload.posts;
-      console.log("all post fulfilled")
+   
     },
     [getAllPost.rejected]: (state, action) => {
       state.status = "error";
       state.error = action.payload;
-      console.log("all post rejected")
+     
     },
     [getUserPosts.pending]: (state) => {
       state.status = "pending";
@@ -238,7 +238,8 @@ export const postSlice = createSlice({
       },
       [createPost.fulfilled]: (state, action) => {
         state.status = "fulfilled";
-        console.log("resonse" , action.payload.posts)
+    
+        
         state.allPost = action.payload.posts;
       },
       [createPost.rejected]: (state, action) => {
@@ -252,19 +253,19 @@ export const postSlice = createSlice({
         state.status = "fulfilled";
      
         state.allPost = action.payload.posts;
-        console.log("edit post fulfilled")
+       
       },
       [editPost.rejected]: (state, action) => {
         state.status = "error";
         state.error = action.payload;
-        console.log("edit post rejected")
+     
       },
       [deletePost.pending]: (state) => {
         state.status = "pending";
       },
       [deletePost.fulfilled]: (state, action) => {
         state.status = "fulfilled";
-        console.log("delete",action.payload)
+      
         state.allPost = action.payload.posts;
       },
       [deletePost.rejected]: (state, action) => {

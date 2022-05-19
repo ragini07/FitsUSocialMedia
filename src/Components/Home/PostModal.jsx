@@ -8,7 +8,7 @@ function PostModal() {
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [postData, setPostData] = useState(postOnModal);
-  console.log("data on post modal", postOnModal);
+
 
   useEffect(() => {
     if (postOnModal) {
