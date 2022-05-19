@@ -19,7 +19,6 @@ function App() {
         <Route path="/bookmark" element={<PrivateRoute><MainContainer><Bookmark /></MainContainer></PrivateRoute>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/testApi" element={<Mockman />} />
       </Routes>
     </>
   );

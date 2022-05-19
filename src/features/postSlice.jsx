@@ -10,6 +10,9 @@ import {
   createPostService,
   editPostService,
   deletePostService,
+  addCommentService,
+  editCommentService,
+  deleteCommentService
 
 } from "../Service";
 
@@ -131,6 +134,41 @@ export const bookmarkPost = createAsyncThunk(
     async ({ token, postId }, thunkAPI) => {
       try {
         const response = await deletePostService(token, postId);
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
+
+  export const addComment = createAsyncThunk(
+    "post/addcomment",
+    async ({ token,  postId,commentData }, thunkAPI) => {
+      try {
+        const response = await addCommentService(token,  postId,commentData);
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
+  export const editComment = createAsyncThunk(
+    "post/editcomment",
+    async ({ token,  postId,commentData ,commentId}, thunkAPI) => {
+      try {
+        const response = await editCommentService(token,  postId,commentData,commentId);
+    
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
+  export const deleteComment = createAsyncThunk(
+    "post/deletecomment",
+    async ({ token,  postId,commentId }, thunkAPI) => {
+      try {
+        const response = await deleteCommentService(token,  postId,commentId);
         return response.data;
       } catch (err) {
         return thunkAPI.rejectWithValue(err);
@@ -269,6 +307,44 @@ export const postSlice = createSlice({
         state.allPost = action.payload.posts;
       },
       [deletePost.rejected]: (state, action) => {
+        state.status = "error";
+        state.error = action.payload;
+      },
+      [addComment.pending]: (state) => {
+        state.status = "pending";
+      },
+      [addComment.fulfilled]: (state, action) => {
+        state.status = "fulfilled";
+        state.allPost = action.payload.posts;
+      },
+      [addComment.rejected]: (state, action) => {
+        state.status = "error";
+        state.error = action.payload;
+      },
+
+
+      [editComment.pending]: (state) => {
+        state.status = "pending";
+      },
+      [editComment.fulfilled]: (state, action) => {
+        state.status = "fulfilled";
+      
+        state.allPost = action.payload.posts;
+      },
+      [editComment.rejected]: (state, action) => {
+        state.status = "error";
+        state.error = action.payload;
+      },
+
+      [deleteComment.pending]: (state) => {
+        state.status = "pending";
+      },
+      [deleteComment.fulfilled]: (state, action) => {
+        state.status = "fulfilled";
+      
+        state.allPost = action.payload.posts;
+      },
+      [deleteComment.rejected]: (state, action) => {
         state.status = "error";
         state.error = action.payload;
       },
