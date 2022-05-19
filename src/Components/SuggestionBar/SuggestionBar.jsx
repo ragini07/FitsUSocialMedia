@@ -46,7 +46,7 @@ function SuggestionBar() {
               ({ firstName, lastName, userHandle, profilePhoto }) => {
                 return (
                   <>
-                    <div className="grid grid-cols-4 gap-1 mb-6 items-center">
+                    <div className="grid grid-cols-4 gap-1 mb-6 items-center" key={userHandle}>
                       <div className="flex items-center justify-between col-span-1">
                         <img
                           className="rounded-full w-12 flex"

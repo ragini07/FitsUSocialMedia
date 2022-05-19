@@ -43,7 +43,7 @@ function OtherProfile() {
     <>
       <div className="flex mx-32 my-8 gap-2 lg:mx-6">
         <div className="container">
-          {/* profile */}
+
           <div className="flex flex-col">
             <div className="p-4 rounded-lg border-gray-base border-2">
               <div className="flex gap-4 grow items-start">
@@ -91,8 +91,7 @@ function OtherProfile() {
               </div>
             </div>
 
-            {/* feed */}
-            {/**Post-feed */}
+          
 
             {userPosts.length > 0 ? (
               userPosts.map((post) => <SinglePost key={post._id} post={post} />)

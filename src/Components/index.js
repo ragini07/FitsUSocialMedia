@@ -1,7 +1,6 @@
 export {Login} from './Auth/Login'
 export {Signup} from './Auth/Signup'
 export {Header} from './Header/Header'
-export {MenuBar} from './MenuBar/MenuBar'
 export {SuggestionBar} from './SuggestionBar/SuggestionBar'
 export {Home} from './Home/Home'
 export {Bookmark} from './Bookmark/Bookmark'

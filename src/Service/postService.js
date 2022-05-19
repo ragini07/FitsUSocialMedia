@@ -110,3 +110,39 @@ export const createPostService = (token,  postData) => {
       }
     );
   };
+  export const addCommentService = (token,  postId,commentData) => {
+    return axios.post(
+      `/api/comments/add/${postId}`,
+      {
+        commentData,
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };
+  export const editCommentService = (token,  postId,commentData,commentId) => {
+    return axios.post(
+      `/api/comments/edit/${postId}/${commentId}`,
+      {
+        commentData
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };
+  export const deleteCommentService = (token,  postId,commentId) => {
+    return axios.delete(
+      `/api/comments/delete/${postId}/${commentId}`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };

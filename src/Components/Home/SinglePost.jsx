@@ -12,10 +12,12 @@ import {
   removeBookmarkedPost,
   deletePost,
   editPost,
+  addComment
 } from "../../features/postSlice";
 
 function SinglePost({ post }) {
   const [showOptions, setShowOptions] = useState(false);
+  const  [comment ,setComment] = useState("")
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { _id, content, username, comments, likes, createdAt, bookmark } = post;
@@ -54,6 +56,12 @@ function SinglePost({ post }) {
   const deletePostHandler = () => {
     dispatch(deletePost({ token: token, postId: _id }));
   };
+
+  const addCommentHandler = () => {
+    if(comment)
+      dispatch(addComment({token : token ,postId : _id,commentData : comment}))
+    setComment("")
+  }
   return (
     <>
       <div className="flex flex-col gap-4 bg-nav-background drop-shadow-2xl p-5 rounded-lg border-gray-base border-2 mt-4">
@@ -149,7 +157,7 @@ function SinglePost({ post }) {
                   alt="post-details"
                 /> */}
         </div>
-        {/**Post footer */}
+      
         <div className="flex gap-4 flex-grow py-1  items-center justify-evenly font-normal text-txt-secondary-color">
           <div
             className="flex items-center  gap-1 cursor-pointer"
@@ -185,17 +193,20 @@ function SinglePost({ post }) {
           <img className="h-8 w-8 rounded-full" src={user?.profilePhoto} />
           <div className="self-center w-full border-solid border border-gray-400 grow flex justify-start rounded-md px-2 py-1">
             <input
-              className="grow focus:outline-none cursor-pointer"
+              className="focus:outline-none cursor-pointer grow "
               placeholder="comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
             ></input>
-            <button className="text-sm text-purple-500 cursor-pointer font-semibold hover:cursor-not-allowed ml-auto cursor-pointer">
+            <button className="text-sm text-purple-500 cursor-pointer font-semibold hover:cursor-not-allowed ml-auto cursor-pointer"
+            onClick={addCommentHandler}>
               Comment
             </button>
           </div>
         </div>
         {comments.length > 0 &&
           comments.map((comment) => (
-            <Comments key={comment._id} comment={comment} />
+            <Comments key={comment._id} comment={comment} postId = {_id} />
           ))}
       </div>
     </>
