@@ -102,6 +102,39 @@ export const bookmarkPost = createAsyncThunk(
       }
     }
   );
+  export const createPost = createAsyncThunk(
+    "post/createpost",
+    async ({ token, post }, thunkAPI) => {
+      try {
+        const response = await createPostService(token, post);
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
+  export const editPost = createAsyncThunk(
+    "post/editpost",
+    async ({ token, post }, thunkAPI) => {
+      try {
+        const response = await editPostService(token, post);
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
+  export const deletePost = createAsyncThunk(
+    "post/editpost",
+    async ({ token, postId }, thunkAPI) => {
+      try {
+        const response = await deletePostService(token, postId);
+        return response.data;
+      } catch (err) {
+        return thunkAPI.rejectWithValue(err);
+      }
+    }
+  );
 export const postSlice = createSlice({
   name: "post",
   initialState,
@@ -188,7 +221,44 @@ export const postSlice = createSlice({
         state.status = "error";
         state.error = action.payload;
       },
-  },
+      [createPost.pending]: (state) => {
+        state.status = "pending";
+      },
+      [createPost.fulfilled]: (state, action) => {
+        state.status = "fulfilled";
+     
+        state.allPost = action.payload.posts;
+      },
+      [createPost.rejected]: (state, action) => {
+        state.status = "error";
+        state.error = action.payload;
+      },
+      [editPost.pending]: (state) => {
+        state.status = "pending";
+      },
+      [editPost.fulfilled]: (state, action) => {
+        state.status = "fulfilled";
+     
+        state.allPost = action.payload.posts;
+      },
+      [editPost.rejected]: (state, action) => {
+        state.status = "error";
+        state.error = action.payload;
+      },
+      [deletePost.pending]: (state) => {
+        state.status = "pending";
+      },
+      [deletePost.fulfilled]: (state, action) => {
+        state.status = "fulfilled";
+     
+        state.allPost = action.payload.posts;
+      },
+      [deletePost.rejected]: (state, action) => {
+        state.status = "error";
+        state.error = action.payload;
+      },
+
+    }
 });
 
 export default postSlice.reducer;
