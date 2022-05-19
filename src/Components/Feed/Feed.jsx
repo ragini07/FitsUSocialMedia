@@ -42,7 +42,7 @@ function Feed() {
     <>
       <div className="flex mx-32 my-8 gap-2 lg:mx-6">
         <div className="container">
-          {/* post */}
+       
           <div className="flex flex-col">
             <div className="p-3 rounded-lg bg-gray-200 text-center font-semibold">
               Feed
