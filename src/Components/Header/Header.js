@@ -9,7 +9,7 @@ function Header() {
   const dispatch = useDispatch();
 
   return (
-    <header className="h-16 bg-white border-b-2 border-purple-500 mb-8 px-5 sticky top-0">
+    <header className="h-16 bg-white border-b-2 border-purple-500 mb-8 px-5 sticky top-0 z-20">
       <div className="container mx-auto max-w-screen-lg h-full">
         <div className="flex justify-between h-full">
           <div className="text-gray-700 text-center flex items-center align-items cursor-pointer">

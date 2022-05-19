@@ -16,7 +16,9 @@ import {
 const initialState = {
   allPost: [],
   userPosts: [],
-  bookmarkedPosts : []
+  bookmarkedPosts : [],
+  postModal : false,
+  postOnModal : {}
 };
 
 export const getAllPost = createAsyncThunk(
@@ -125,7 +127,7 @@ export const bookmarkPost = createAsyncThunk(
     }
   );
   export const deletePost = createAsyncThunk(
-    "post/editpost",
+    "post/deletepost",
     async ({ token, postId }, thunkAPI) => {
       try {
         const response = await deletePostService(token, postId);
@@ -138,7 +140,15 @@ export const bookmarkPost = createAsyncThunk(
 export const postSlice = createSlice({
   name: "post",
   initialState,
-  reducers: {},
+  reducers:  {
+    setPostModal : (state,action) => {
+        if(action.payload){
+          state.postOnModal = action.payload
+        }
+        state.postModal = !state.postModal;
+       
+    }
+},
   extraReducers: {
     [getAllPost.pending]: (state) => {
       state.status = "pending";
@@ -146,10 +156,12 @@ export const postSlice = createSlice({
     [getAllPost.fulfilled]: (state, action) => {
       state.status = "fulfilled";
       state.allPost = action.payload.posts;
+      console.log("all post fulfilled")
     },
     [getAllPost.rejected]: (state, action) => {
       state.status = "error";
       state.error = action.payload;
+      console.log("all post rejected")
     },
     [getUserPosts.pending]: (state) => {
       state.status = "pending";
@@ -226,7 +238,7 @@ export const postSlice = createSlice({
       },
       [createPost.fulfilled]: (state, action) => {
         state.status = "fulfilled";
-     
+        console.log("resonse" , action.payload.posts)
         state.allPost = action.payload.posts;
       },
       [createPost.rejected]: (state, action) => {
@@ -240,17 +252,19 @@ export const postSlice = createSlice({
         state.status = "fulfilled";
      
         state.allPost = action.payload.posts;
+        console.log("edit post fulfilled")
       },
       [editPost.rejected]: (state, action) => {
         state.status = "error";
         state.error = action.payload;
+        console.log("edit post rejected")
       },
       [deletePost.pending]: (state) => {
         state.status = "pending";
       },
       [deletePost.fulfilled]: (state, action) => {
         state.status = "fulfilled";
-     
+        console.log("delete",action.payload)
         state.allPost = action.payload.posts;
       },
       [deletePost.rejected]: (state, action) => {
@@ -261,4 +275,5 @@ export const postSlice = createSlice({
     }
 });
 
+export const { setPostModal } = postSlice.actions;
 export default postSlice.reducer;

@@ -72,11 +72,11 @@ export const likePostService = (token, postId) => {
         },
       });
 }
-export const createPostService = (token, post) => {
+export const createPostService = (token,  postData) => {
     return axios.post(
       `/api/posts`,
       {
-        post
+        postData
       },
       {
         headers: {
@@ -86,11 +86,11 @@ export const createPostService = (token, post) => {
     );
   };
 
-  export const editPostService = (token, post) => {
+  export const editPostService = (token, postData) => {
     return axios.post(
-      `/api/posts/edit/${post._id}`,
+      `/api/posts/edit/${postData._id}`,
       {
-        post
+        postData
       },
       {
         headers: {
