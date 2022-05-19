@@ -16,7 +16,8 @@ function Home() {
   }, [user]);
 
   const createPostHandler = () => {
-    dispatch(createPost({ token: token, post: postData }));
+    if(postData.content)
+      dispatch(createPost({ token: token, post: postData }));
     setPostData(initialPostState);
   };
   return (
