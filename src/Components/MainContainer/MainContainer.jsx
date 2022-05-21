@@ -1,13 +1,13 @@
-import React from 'react';
-import { SuggestionBar ,Header} from "../index";
+import React from "react";
+import { SuggestionBar, Header } from "../index";
 
-function MainContainer({children}) {
+function MainContainer({ children }) {
   return (
     <>
-    <Header />
-    {children}
+      <Header />
+      {children}
     </>
-  )
+  );
 }
 
-export  {MainContainer}
+export { MainContainer };

@@ -1,6 +1,7 @@
 import { setPostModal, editPost } from "../../features/postSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 function PostModal() {
   const { postModal, postOnModal } = useSelector((state) => state.post);
@@ -8,7 +9,6 @@ function PostModal() {
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [postData, setPostData] = useState(postOnModal);
-
 
   useEffect(() => {
     if (postOnModal) {
@@ -19,6 +19,7 @@ function PostModal() {
   const editPostHandler = () => {
     dispatch(editPost({ token: token, post: postData }));
     dispatch(setPostModal());
+    toast.success("Updated successfully");
   };
   return (
     <>
@@ -48,13 +49,7 @@ function PostModal() {
               </svg>
             </div>
             <div class="flex flex-col gap-4">
-              <div className="flex mb-2">
-                {/* <img
-                    className="h-10 w-10 rounded-full"
-                    src="https://tse2.mm.bing.net/th?id=OIP.jryuUgIHWL-1FVD2ww8oWgHaHa&pid=Api&P=0&w=192&h=192"
-                    alt="profile-img"
-                  /> */}
-              </div>
+              <div className="flex mb-2"></div>
               <div className="flex mb-2 h-20">
                 <textarea
                   className="pl-2 grow w-full h-20 font-light bg-purple-300 px-1 py-0.5 rounded-sm focus:outline-none"

@@ -4,20 +4,31 @@ import { getAllPost, createPost } from "../../features/postSlice";
 import { useEffect, useState } from "react";
 import { SinglePost } from "./SinglePost";
 import { initialPostState } from "../../utils/constants";
+import { toast } from "react-toastify";
+import LoaderImg from "../../assets/loader.gif";
 
 function Home() {
   const [postData, setPostData] = useState(initialPostState);
   const { allPost } = useSelector((state) => state.post);
   const { user, token } = useSelector((state) => state.auth);
-
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
   useEffect(() => {
     dispatch(getAllPost());
   }, [user]);
 
   const createPostHandler = () => {
-    if(postData.content)
+    if (postData.content) {
       dispatch(createPost({ token: token, post: postData }));
+      toast.success("Posted Successfully");
+    }
+
     setPostData(initialPostState);
   };
   return (
@@ -52,7 +63,9 @@ function Home() {
                     <i className=""></i>
                   </li>
                   <button
-                    className="cursor-pointer mb-4 mx-4 p-2 rounded-lg ml-auto bg-purple-500 hover:bg-purple-600 text-white"
+                    className={`mb-4 mx-4 p-2 rounded-lg ml-auto bg-purple-500 hover:bg-purple-600 text-white ${
+                      postData.content ? "cursor-pointer" : "cursor-not-allowed"
+                    } `}
                     onClick={createPostHandler}
                   >
                     Post
@@ -61,10 +74,16 @@ function Home() {
               </div>
             </div>
 
-            {allPost.length > 0 &&
+            {loading ? (
+              <div className="flex justify-center items-center">
+                <img src={LoaderImg} className="h-40 w-40"></img>
+              </div>
+            ) : (
+              allPost.length > 0 &&
               allPost
                 .map((post) => <SinglePost key={post._id} post={post} />)
-                .reverse()}
+                .reverse()
+            )}
           </div>
         </div>
         <SuggestionBar />

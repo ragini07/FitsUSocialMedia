@@ -1,11 +1,10 @@
 import { MenuBar, SuggestionBar } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserPosts } from "../../features/postSlice";
-import { setProfileModal} from '../../features/userSlice'
+import { setProfileModal } from "../../features/userSlice";
 import { updateUser } from "../../features/authSlice";
 import { useEffect } from "react";
 import { SinglePost } from "../Home/SinglePost";
-
 
 function UserProfile() {
   const { users, status } = useSelector((state) => state.user);
@@ -52,8 +51,10 @@ function UserProfile() {
                     <p>{user?.following.length} Following</p>
                   </div>
                 </div>
-                <button className="ring-2 ring-purple-500 m-2 py-1 px-2 hover:bg-gray-200 rounded-lg text-gray-600 ml-auto cursor-pointer"
-                onClick={() => dispatch(setProfileModal())}>
+                <button
+                  className="ring-2 ring-purple-500 m-2 py-1 px-2 hover:bg-gray-200 rounded-lg text-gray-600 ml-auto cursor-pointer"
+                  onClick={() => dispatch(setProfileModal())}
+                >
                   Edit
                 </button>
               </div>

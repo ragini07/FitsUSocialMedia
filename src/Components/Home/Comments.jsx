@@ -1,17 +1,17 @@
-import {useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {deleteComment ,editComment} from "../../features/postSlice";
+import { deleteComment, editComment } from "../../features/postSlice";
 
-function Comments({ comment ,postId}) {
+function Comments({ comment, postId }) {
   const [showOptions, setShowOptions] = useState(false);
-  const [showInput , setShowInput] = useState(false);
-  const [commentTxt , setCommentText] = useState("")
-  const { _id ,text, username } = comment;
+  const [showInput, setShowInput] = useState(false);
+  const [commentTxt, setCommentText] = useState("");
+  const { _id, text, username } = comment;
   const { users } = useSelector((state) => state.user);
   const { user, token } = useSelector((state) => state.auth);
   const commentByUser = users?.find((e) => e.username === username);
   const { firstName, lastName, profilePhoto } = commentByUser;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const isUserComment = username === user.username;
 
   useEffect(() => {
@@ -20,27 +20,33 @@ function Comments({ comment ,postId}) {
     }
   }, [text]);
 
-  const deleteCommentHandler =() => {
-    dispatch(deleteComment({ token: token, postId: postId ,commentId : _id}));
-  }
+  const deleteCommentHandler = () => {
+    dispatch(deleteComment({ token: token, postId: postId, commentId: _id }));
+  };
 
   const editCommentHandler = () => {
-    if(commentTxt){
-      dispatch(editComment({token : token ,postId : postId,commentData : commentTxt ,commentId : _id}));
-      setShowInput(prev => !prev)
+    if (commentTxt) {
+      dispatch(
+        editComment({
+          token: token,
+          postId: postId,
+          commentData: commentTxt,
+          commentId: _id,
+        })
+      );
+      setShowInput((prev) => !prev);
     }
-      
-  }
+  };
   return (
     <>
       <div className="flex gap-3">
         <img className="h-8 w-8 rounded-full" src={profilePhoto} />
         <div className="w-full bg-gray-200 grow flex flex-col rounded-md px-2 py-1">
           <div className="flex justify-between">
-          <p className="text-sm">
-            {firstName} {lastName}
-          </p>
-          {isUserComment && (
+            <p className="text-sm">
+              {firstName} {lastName}
+            </p>
+            {isUserComment && (
               <div className="relative">
                 <svg
                   onClick={() => setShowOptions((prev) => !prev)}
@@ -60,7 +66,7 @@ function Comments({ comment ,postId}) {
                     <li
                       className=" text-gray-600 cursor-pointer text-sm my-1 flex items-center font-semibold hover:text-purple-700"
                       onClick={() => {
-                        setShowInput((prev) => !prev)
+                        setShowInput((prev) => !prev);
                         setShowOptions((prev) => !prev);
                       }}
                     >
@@ -107,23 +113,32 @@ function Comments({ comment ,postId}) {
               </div>
             )}
           </div>
-          {
-            showInput ? <><input
-            className="focus:outline-none cursor-pointer grow self-center w-full text-sm border-solid border border-gray-400 grow flex justify-start rounded-md px-1"
-            placeholder="comment"
-            value={commentTxt}
-            onChange={(e) => setCommentText(e.target.value)}
-          ></input>
-          <div className="flex justify-end text-sm px-2 pt-1">
-          <button className="pr-3 text-red-500 cursor-pointer"
-          onClick={() => setShowInput(prev => !prev)}>Cancel</button>
-          <button className="text-purple-500 cursor-pointer"
-          onClick={editCommentHandler}>Comment</button>
-          </div>
-         
-          </> :   <p className="text-xs text-gray-500">{text}</p>
-          }
-        
+          {showInput ? (
+            <>
+              <input
+                className="focus:outline-none cursor-pointer grow self-center w-full text-sm border-solid border border-gray-400 grow flex justify-start rounded-md px-1"
+                placeholder="comment"
+                value={commentTxt}
+                onChange={(e) => setCommentText(e.target.value)}
+              ></input>
+              <div className="flex justify-end text-sm px-2 pt-1">
+                <button
+                  className="pr-3 text-red-500 cursor-pointer"
+                  onClick={() => setShowInput((prev) => !prev)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="text-purple-500 cursor-pointer"
+                  onClick={editCommentHandler}
+                >
+                  Comment
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className="text-xs text-gray-500">{text}</p>
+          )}
         </div>
       </div>
     </>

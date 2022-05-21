@@ -10,7 +10,6 @@ export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password }, thunkAPI) => {
     try {
-  
       const response = await loginUser(email, password);
 
       return response.data;
@@ -36,7 +35,7 @@ export const updateUser = createAsyncThunk(
   async ({ token, userData }, thunkAPI) => {
     try {
       const response = await updateUserProfile(token, userData);
-     
+
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
@@ -62,7 +61,6 @@ export const authSlice = createSlice({
       state.status = "pending";
     },
     [login.fulfilled]: (state, action) => {
-    
       state.status = "fulfilled";
       state.token = action.payload.encodedToken;
       state.user = action.payload.foundUser;
@@ -77,7 +75,6 @@ export const authSlice = createSlice({
       state.status = "pending";
     },
     [signUp.fulfilled]: (state, action) => {
-  
       state.status = "fulfilled";
       state.token = action.payload.encodedToken;
       state.user = action.payload.createdUser;
@@ -93,7 +90,6 @@ export const authSlice = createSlice({
       state.status = "pending";
     },
     [updateUser.fulfilled]: (state, action) => {
-    
       state.status = "fulfilled";
       state.user = action.payload.user;
       localStorage.setItem("userData", JSON.stringify(state.user));

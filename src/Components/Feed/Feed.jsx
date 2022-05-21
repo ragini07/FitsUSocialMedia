@@ -3,14 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserPosts, getAllPost } from "../../features/postSlice";
 import { useEffect, useState } from "react";
 import { SinglePost } from "../Home/SinglePost";
+import LoaderImg from "../../assets/loader.gif";
 
 function Feed() {
   const [feed, setFeed] = useState([]);
   const [trending, setTrending] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [trendingFeed, setTrendingFeed] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const { allPost } = useSelector((state) => state.post);
   const dispatch = useDispatch();
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
   useEffect(() => {
     dispatch(getAllPost());
   }, [user]);
@@ -42,7 +50,6 @@ function Feed() {
     <>
       <div className="flex mx-32 my-8 gap-2 lg:mx-6">
         <div className="container">
-       
           <div className="flex flex-col">
             <div className="p-3 rounded-lg bg-gray-200 text-center font-semibold">
               Feed
@@ -62,8 +69,11 @@ function Feed() {
                 Trending
               </div>
             </div>
-
-            {trending ? (
+            {loading ? (
+              <div className="flex justify-center items-center">
+                <img src={LoaderImg} className="h-40 w-40"></img>
+              </div>
+            ) : trending ? (
               trendingFeed.length > 0 ? (
                 trendingFeed.map((post) => (
                   <SinglePost key={post._id} post={post} />

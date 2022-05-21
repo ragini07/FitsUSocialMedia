@@ -11,7 +11,7 @@ const initialState = {
   users: [],
   status: "idle",
   error: null,
-  profileModal : false
+  profileModal: false,
 };
 
 export const getAllUsers = createAsyncThunk(
@@ -58,10 +58,9 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-      setProfileModal : (state) => {
-       
-          state.profileModal = !state.profileModal;
-      }
+    setProfileModal: (state) => {
+      state.profileModal = !state.profileModal;
+    },
   },
   extraReducers: {
     [getAllUsers.pending]: (state) => {

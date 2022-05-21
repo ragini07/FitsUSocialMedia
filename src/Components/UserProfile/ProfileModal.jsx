@@ -3,7 +3,7 @@ import axios from "axios";
 import { setProfileModal } from "../../features/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../features/authSlice";
-// import {uploadImg} from '../../utils/uploadImg'
+import { toast } from "react-toastify";
 
 function ProfileModal() {
   const { user, token } = useSelector((state) => state.auth);
@@ -19,6 +19,7 @@ function ProfileModal() {
   const updateUserHandler = () => {
     dispatch(updateUser({ token: token, userData: userData }));
     dispatch(setProfileModal());
+    toast.success("Your Profile Updated !!");
   };
   const changeProfileHandler = async (e) => {
     try {
@@ -65,25 +66,24 @@ function ProfileModal() {
               <div class="mt-2 flex flex-col gap-4">
                 <div className="flex gap-8 mb-2">
                   <div>Avatar</div>
-                  {
-                      !loading ? 
-                      <div className="relative">
-                    <img
-                      className="h-14 w-14 rounded-full"
-                      src={userData?.profilePhoto}
-                      alt="profile-img"
-                    />
-                    <i className="fa-solid fa-camera text-white flex justify-center absolute right-0 top-8 cursor-pointer bg-purple-500 h-6 w-6 rounded-full z-10"></i>
-                    <input
-                      className="absolute top-8  right-0 w-6 opacity-0 z-10"
-                      accept="image/gif, image/jpeg, image/png, image/jpg,image/webp"
-                      type="file"
-                      onChange={(e) => changeProfileHandler(e)}
-                    />
-                  </div> : 
-                  <div>Loading..</div>
-                  }
-                  
+                  {!loading ? (
+                    <div className="relative">
+                      <img
+                        className="h-14 w-14 rounded-full"
+                        src={userData?.profilePhoto}
+                        alt="profile-img"
+                      />
+                      <i className="fa-solid fa-camera text-white flex justify-center absolute right-0 top-8 cursor-pointer bg-purple-500 h-6 w-6 rounded-full z-10"></i>
+                      <input
+                        className="absolute top-8  right-0 w-6 opacity-0 z-10"
+                        accept="image/gif, image/jpeg, image/png, image/jpg,image/webp"
+                        type="file"
+                        onChange={(e) => changeProfileHandler(e)}
+                      />
+                    </div>
+                  ) : (
+                    <div>Loading..</div>
+                  )}
                 </div>
                 <div className="flex gap-12 mb-2">
                   <div>Bio</div>

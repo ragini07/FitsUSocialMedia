@@ -5,6 +5,8 @@ import { getDate } from "../../utils/getDate";
 import { useNavigate } from "react-router-dom";
 import { getAllUsers } from "../../features/userSlice";
 import { setPostModal } from "../../features/postSlice";
+import { toast } from "react-toastify";
+
 import {
   likePost,
   disLikePost,
@@ -12,12 +14,14 @@ import {
   removeBookmarkedPost,
   deletePost,
   editPost,
-  addComment
+  addComment,
 } from "../../features/postSlice";
 
 function SinglePost({ post }) {
   const [showOptions, setShowOptions] = useState(false);
-  const  [comment ,setComment] = useState("")
+  const [comment, setComment] = useState("");
+  const [showAllComment, setShowAllComment] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { _id, content, username, comments, likes, createdAt, bookmark } = post;
@@ -48,9 +52,13 @@ function SinglePost({ post }) {
   };
 
   const bookmarkHandler = () => {
-    isBoomarked
-      ? dispatch(removeBookmarkedPost({ token: token, postId: _id }))
-      : dispatch(bookmarkPost({ token: token, postId: _id }));
+    if (isBoomarked) {
+      dispatch(removeBookmarkedPost({ token: token, postId: _id }));
+      toast.success("Removed from bookmarks");
+    } else {
+      dispatch(bookmarkPost({ token: token, postId: _id }));
+      toast.success("Added to bookmarks");
+    }
   };
 
   const deletePostHandler = () => {
@@ -58,10 +66,10 @@ function SinglePost({ post }) {
   };
 
   const addCommentHandler = () => {
-    if(comment)
-      dispatch(addComment({token : token ,postId : _id,commentData : comment}))
-    setComment("")
-  }
+    if (comment)
+      dispatch(addComment({ token: token, postId: _id, commentData: comment }));
+    setComment("");
+  };
   return (
     <>
       <div className="flex flex-col gap-4 bg-nav-background drop-shadow-2xl p-5 rounded-lg border-gray-base border-2 mt-4">
@@ -151,13 +159,8 @@ function SinglePost({ post }) {
 
         <div className="flex flex-col gap-2 flex-grow">
           <p>{content}</p>
-          {/* <img
-                  className="rounded-lg"
-                  src="https://images.unsplash.com/photo-1558236617-7d65d9dbcd02?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGNlbGVicmF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60"
-                  alt="post-details"
-                /> */}
         </div>
-      
+
         <div className="flex gap-4 flex-grow py-1  items-center justify-evenly font-normal text-txt-secondary-color">
           <div
             className="flex items-center  gap-1 cursor-pointer"
@@ -198,16 +201,36 @@ function SinglePost({ post }) {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             ></input>
-            <button className="text-sm text-purple-500 cursor-pointer font-semibold hover:cursor-not-allowed ml-auto cursor-pointer"
-            onClick={addCommentHandler}>
+            <button
+              className={`text-sm text-purple-500 font-semibold hover:cursor-not-allowed ml-auto ${
+                comment ? "cursor-pointer" : "cursor-not-allowed"
+              } `}
+              onClick={addCommentHandler}
+            >
               Comment
             </button>
           </div>
         </div>
-        {comments.length > 0 &&
-          comments.map((comment) => (
-            <Comments key={comment._id} comment={comment} postId = {_id} />
-          ))}
+        {comments.length > 0 && comments.length > 2 ? (
+          <>
+            <div
+              className="text-xs text-gray-500 cursor-pointer"
+              onClick={() => setShowAllComment((prev) => !prev)}
+            >
+              {!showAllComment ? "View all comments" : "Hide comments"}
+            </div>
+            {showAllComment &&
+              comments.map((comment) => (
+                <Comments key={comment._id} comment={comment} postId={_id} />
+              ))}
+          </>
+        ) : (
+          comments
+            .map((comment) => (
+              <Comments key={comment._id} comment={comment} postId={_id} />
+            ))
+            .slice(0, 2)
+        )}
       </div>
     </>
   );

@@ -18,6 +18,5 @@ export {
   deletePostService,
   addCommentService,
   editCommentService,
-  deleteCommentService
-
+  deleteCommentService,
 } from "./postService";
