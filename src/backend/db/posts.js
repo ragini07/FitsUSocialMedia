@@ -104,7 +104,7 @@ export const posts = [
       {
         _id: uuid(),
         username: "jdoe@gmail.com",
-        text: "Example",
+        text: "Example ?",
         votes: {
           upvotedBy: [],
           downvotedBy: [],
@@ -126,6 +126,25 @@ export const posts = [
     username: "test@gmail.com",
    
     createdAt: "06 December 2021",
+    updatedAt: formatDate(),
+    comments : [
+   
+    ]
+    
+  },
+  {
+    _id: uuid(),
+    content:
+      "Don’t burn yourself out by expecting the results to come in a day !!",
+    likes: {
+      likeCount: 0,
+      likedBy: [],
+      dislikedBy: [],
+    },
+    bookmark : [],
+    username: "test@gmail.com",
+   
+    createdAt: "16 December 2021",
     updatedAt: formatDate(),
     comments : [
    
